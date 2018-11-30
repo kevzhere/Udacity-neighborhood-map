@@ -6,21 +6,27 @@ class SideBar extends Component {
     state = {
         locations: [],
         filter: '',
-        loc: []
+        displayLocations: []
     }
 
     componentWillReceiveProps(props){
         this.setState({
             locations: props.locations,
-            updateFilter: props.updateFilter
+            updateFilter: props.updateFilter,
+            displayLocations: props.displayLocations
         });
+        
+    }
+
+    makeMarker(locationInfo) {
+        locationInfo.onClick(locationInfo);
     }
 
     render(){
         const displayLocation =  this.state.locations.map(
-                location =>(
-                    <li key={location.venue.id} aria-label="location name">
-                        {location.venue.name}
+                (location) => (
+                    <li key={location.key} aria-label='location name' onClick={this.makeMarker.bind(this, location.props)}>
+                        {location.props.name}
                     </li>
                 )
             );
@@ -30,7 +36,9 @@ class SideBar extends Component {
                     <label>
                         <h3>Search</h3>
                         <input type='text' name='searchLocation' onChange={this.props? this.props.updateFilter : 0}/>
-                        {displayLocation}
+                        {/* <ol> */}
+                            {displayLocation}
+                        {/* </ol> */}
                     </label>
                 </form>
 

@@ -11,13 +11,17 @@ class App extends Component {
     showingInfoWindow: false,
     activeMarker: {},
     selectedPlace: {},
-    locations: []
+    locations: [],
+    loadingError: false,
+    errorMsg: ''
   };
+
+  locations;
 
   componentDidMount() {
     this.getLocations()
   }
-  locations;
+  
 
   //gets location from foursquare api
   getLocations = () => {
@@ -39,18 +43,22 @@ class App extends Component {
         });
       },
       err => {
-        console.log('Error', err);
+       this.setState({
+        loadingError: true,
+        errorMsg: err
+       });
       },
     );
   }
 
   //display info window
-  onMarkerClick = (props, marker, e) =>
+  onMarkerClick = (props, e) => {
     this.setState({
-      selectedPlace: props,
-      activeMarker: marker,
-      showingInfoWindow: true
+      markerLocation: props.position,
+      showingInfoWindow: true,
+      name: props.name
     });
+  }
 
   //used to filter locations
   updateFilter = (event) => {
@@ -65,10 +73,17 @@ class App extends Component {
     if (this.state.showingInfoWindow) {
       this.setState({
         showingInfoWindow: false,
-        activeMarker: null
       })
     }
   };
+
+  componentDidCatch(error, info) {
+    // Display fallback UI
+    this.setState({ 
+      loadingError: true,
+      errorMsg: info
+    });
+  }
 
   render() {
     const displayLocations = this.state.locations.map(
@@ -88,9 +103,17 @@ class App extends Component {
         </Marker>
       )}
     );
+    
+    if(this.state.apiError) {
+      return (
+        <div>
+          <h1>Sorry, could not load locations from api.</h1>
+        </div>
+      )
+    }
     return (
       <div>
-        <SideBar locations={this.state.locations} updateFilter={this.updateFilter}/>
+        <SideBar locations={displayLocations} updateFilter={this.updateFilter}/>
         <Map 
           google={this.props.google} 
           onClick={this.onMapClicked} 
@@ -101,10 +124,10 @@ class App extends Component {
         >
           {displayLocations}
           <InfoWindow
-            marker={this.state.activeMarker}
+            position={this.state.markerLocation}
             visible={this.state.showingInfoWindow}>
               <div>
-                <h1>{this.state.selectedPlace.name}</h1>
+                <h1>{this.state.name}</h1>
               </div>
           </InfoWindow>
         </Map>

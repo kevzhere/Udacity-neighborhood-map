@@ -87,6 +87,10 @@ class App extends Component {
       this.state.infoWindows.push(infowindow);
       this.state.markers.push(marker);
       marker.addListener('click', function() {
+        marker.setAnimation(window.google.maps.Animation.BOUNCE);
+        setTimeout(() => {
+          marker.setAnimation(null);
+        }, 2000);
         infowindow.open(map, marker)
       });
     });

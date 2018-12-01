@@ -20,15 +20,11 @@ class SideBar extends Component {
             infoWindows: props.infoWindows,
             map: props.map
         });
-        console.log(props);
-        console.log('this state', this.state);
     }
 
     openMarker(name) {
-        console.log(this.state.markers);
         this.state.markers.forEach(
             marker => {
-                // console.log('marker', marker)
                 if (name === marker.title) {
                     this.state.infoWindows.forEach(
                         infoWindow => {
@@ -44,8 +40,8 @@ class SideBar extends Component {
 
     render(){
         const displayLocation = this.state.restaurants.map(
-            restaurant => (
-                <li aria-label='location name' key={restaurant.referralId} onClick={() => {this.openMarker(restaurant.venue.name)}} value={restaurant.venue.name}>
+            (restaurant, index) => (
+                <li aria-label='location name' key={restaurant.referralId} onClick={() => {this.openMarker(restaurant.venue.name)}} value={restaurant.venue.name} tabIndex={index+1}>
                     {restaurant.venue.name}
                 </li>
             )
@@ -55,7 +51,7 @@ class SideBar extends Component {
                 <form>
                     <label>
                         <h3>Search</h3>
-                        <input type='text' name='searchLocation' onChange={this.props? this.props.updateFilter : 0}/>
+                        <input tabIndex="0" type='text' name='searchLocation' onChange={this.props? this.props.updateFilter : 0} aria-labelledby="Search Box"/>
                         <ol>
                             {displayLocation}
                         </ol>

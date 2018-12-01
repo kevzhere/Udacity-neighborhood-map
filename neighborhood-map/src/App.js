@@ -17,6 +17,7 @@ class App extends Component {
   componentDidMount() {
     window.initMap = this.initMap;
     this.getLocations();
+
   }
 
   getLocations = () => {
@@ -54,8 +55,10 @@ class App extends Component {
     this.state.markers.forEach(
       marker => {marker.setMap(null)}
     );
-    this.state.markers = [];
-    this.state.infoWindows = [];
+    this.setState({
+      markers: [],
+      infoWindows: []
+    })
     this.generateMarkerAndInfoWindow(this.state.map);
   }
   
@@ -86,8 +89,6 @@ class App extends Component {
       marker.addListener('click', function() {
         infowindow.open(map, marker)
       });
-      
-      
     });
   }
 
@@ -121,6 +122,11 @@ function loadScript() {
   script.async = true;
   script.defer = true;
   index.parentNode.insertBefore(script, index);
+}
+
+window.oneError = (msg, url, line) => {
+  alert(`Message: ${msg} \nUrl: ${url} \nLine: ${line}`)
+  return true;
 }
 
 export default App;

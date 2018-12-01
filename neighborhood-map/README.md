@@ -10,5 +10,5 @@ All restaurant information are returned from Foursquare api.
 4. To run the app in production build use npm run build
 
 ## Others Information
-Service worker is automatically created with create-react-app and will only run in production build.
+Service worker is automatically created with create-react-app and will only run in production build which can be started with "npm run build".
 This project was build ontop of a tutorial by Elharony on youtube. 

@@ -8,6 +8,7 @@ All restaurant information are returned from Foursquare api.
 2. run npm install to install dependencies 
 3. run npm start to run the app
 4. To run the app in production build use npm run build
+
 ## Others Information
 Service worker is automatically created with create-react-app and will only run in production build.
-
+This project was build ontop of a tutorial by Elharony on youtube. 
